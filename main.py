@@ -1,45 +1,39 @@
-import numpy as np
-from PIL import Image
+from canvas import Canvas
+from shapes import Square, Rectangle
 
-class Canvas:
-    def __init__(self, w, h, color):
-        self.w = w
-        self.h = h
-        self.color = color
+canvas_width = int(input("Enter canvas width: "))
+canvas_height = int(input("Enter canvas height: "))
 
-        self.data = np.zeros((self.w, self.h, 3), dtype=np.uint8)
-        self.data[:] = self.color
+colors = {"white": (255, 255, 255), "black": (0, 0, 0)}
+canvas_color = input("Enter canvas color (black or white)")
 
-    def make(self, image_path):
-        img = Image.fromarray(self.data, 'RGB')
-        img.save(image_path)
+canvas = Canvas(canvas_width, canvas_height, colors[canvas_color])
 
+while True:
+    shape_type = input("What do you like to draw?(rectangle or square) Enter quit to quit. ")
+    if shape_type.lower() == 'rectangle':
+        rec_x = int(input("Enter x of the rectangle: "))
+        rec_y = int(input("Enter y of the rectangle: "))
+        rec_width = int(input("Enter width of the rectangle: "))
+        rec_height = int(input("Enter height of the rectangle: "))
+        red = int(input("How much red should the rectangle have?(0-255) "))
+        green = int(input("How much green should the rectangle have?(0-255) "))
+        blue = int(input("How much blue should the rectangle have?(0-255) "))
 
-class Square:
-    def __init__(self, x, y, side, color):
-        self.x = x
-        self.y = y
-        self.side = side
-        self.color = color
+        rectangle1 = Rectangle(rec_x, rec_y, rec_width, rec_height, (red, green, blue))
+        rectangle1.draw(canvas)
 
-    def draw(self, canvas):
-        canvas.data[self.x: self.x + self.side, self.y: self.y + self.side] = self.color
+    if shape_type.lower() == 'square':
+        sqr_x = int(input("Enter x of the square: "))
+        sqr_y = int(input("Enter y of the square: "))
+        sqr_side = int(input("Enter side of the square: "))
+        red = int(input("How much red should the square have?(0-255) "))
+        green = int(input("How much green should the square have?(0-255) "))
+        blue = int(input("How much blue should the square have?(0-255) "))
 
+        square1 = Square(sqr_x, sqr_y, sqr_side, (red, green, blue))
+        square1.draw(canvas)
 
-class Rectangle:
-    def __init__(self, x, y, a, b, color):
-        self.x = x
-        self.y = y
-        self.a = a
-        self.b = b
-        self.color = color
-
-    def draw(self, canvas):
-        canvas.data[self.x: self.x + self.a, self.y: self.y + self.b] = self.color
-
-canvas = Canvas(400, 500, (255,255,255))
-r1 = Rectangle(50, 50, 100, 200, (24,56,200))
-r1.draw(canvas)
-s1 = Square(150,250, 100, (100, 50, 170))
-s1.draw(canvas)
-canvas.make("canvas.png")
+    if shape_type.lower() == "quit":
+        break
+canvas.make('canvas.png')
